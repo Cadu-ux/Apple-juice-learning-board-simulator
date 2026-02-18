@@ -97,7 +97,11 @@ class LampPanel {
             std::cout << "Lâmpadas: ";
             for (int i = (int)n_ - 1; i >= 0; --i) {
                 bool on = (bits >> i) & 1u;
-                std::cout << (on ? "● " : "○ ");
+                if (on) {
+                    std::cout << "\033[1;34m● \033[0m";  // azul brilhante
+                } else {
+                    std::cout << "○ ";
+                }
             }
             std::cout << "\n\n";
 
@@ -125,7 +129,7 @@ int main() {
         
         const double R1 = 10000.0;     // 10kΩ
         const double R2 = 10000.0;     // 10kΩ
-        const double C  = 22e-6;       // 22µF
+        const double C  = 11e-6;       // 22µF
         Chip555 chip555(R1, R2, C);
 
         Chip4017 chip4017(LAMPADAS);
