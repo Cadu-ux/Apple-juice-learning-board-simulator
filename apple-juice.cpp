@@ -12,8 +12,18 @@
     ao longo do desenvolvimento deste código. 
 
     Responsáveis pelo desenvolvimento deste projeto: Francisco, Renato, Arthur, Matos e Carlos Eduardo 
+
+    Notas do(s) desenvolvedor(es):
+        *  Optei por não utilizar a diretiva using namespace para garantir uma apresentação mais clara do código. Evitar o uso de namespace reforça que determinada 
+        parte do código foi retirada de uma biblioteca específica. Essa mesma motivação me levou a encapsular a biblioteca raylib dentro do meu próprio namespace
+        ray, conforme documentado mais adiante.
+
+        — Ass.: Francisco
+ 
+        *  ...
 */
 
+// bibliotecas utilizadas no projeto
 #include <iostream>             // Entrada e saída padrão (cout, cerr, etc.)
 #include <cmath>                // Funções matemáticas (pow, sin, etc.)
 #include <cstdint>              // Tipos inteiros com tamanho fixo (uint32_t, int64_t, etc.)
@@ -24,17 +34,22 @@
 #include <chrono>               // Controle de tempo e delays (std::chrono::duration, sleep_for)
 
 /*
-    Biblioteca gráfica:
+    Biblioteca responsável pela interface gráfica:
 
     Coloquei esta biblioteca dentro do namespace 'ray' para diferenciá-la de outras bibliotecas.
-    Como ela foi escrita em C, não possui namespace nativamente, ao contrário de bibliotecas C++ como 'iostream', que ficam dentro do 'std'.
+    Como ela foi escrita em C, não possui namespace nativamente, ao contrário de bibliotecas C++ como 'iostream', 
+    que ficam dentro do 'std'.
 */
 namespace ray{
     #include <raylib.h>
 }
 
 
-// Simulação do Chip555 configurado em modo astável
+/*
+    Simulação do Chip555 configurado em modo astável
+    Consulte a seção de Astable Mode (Free‑Running) no datasheet do NE555 / LM555 aproximadamente nas páginas 7–8, onde são apresentadas as
+    fórmulas e explicações para tHigh, tLow, período e frequência da oscilação.
+*/
 class Chip555 {
 private:
     double R1, R2, C;
@@ -42,12 +57,15 @@ private:
     double tLow  = 0.0;
     double period = 0.0;
     double freq   = 0.0;
+
+    // logarítmo natural de 2
+    const double Ln2    = 0.693;
     std::atomic<bool> stateHigh{false};
 
     void calcTimings() {
         // Modo astável (aprox): tH = 0.693*(R1+R2)*C; tL = 0.693*R2*C
-        tHigh = 0.693 * (R1 + R2) * C;
-        tLow  = 0.693 * (R2) * C;
+        tHigh = Ln2 * (R1 + R2) * C;
+        tLow  = Ln2 * (R2) * C;
         period = tHigh + tLow;
         freq = (period > 0) ? (1.0 / period) : 0.0;
     }
@@ -70,6 +88,7 @@ public:
         std::this_thread::sleep_for(std::chrono::duration<double>(tLow));
     }
 
+    // estes métodos apenas acessam os valores sem alterá-los (const foi usado aqui como uma aplicação de segurança)
     bool isHigh() const { 
         return stateHigh; 
     }
@@ -84,7 +103,8 @@ public:
 };
 
 
-//  Chip4017 (contador johnsson)
+// Chip4017 (contador johnsson)
+// Consulte o datasheet do CD4017 para informações mais detalhadas a respeito de seu funcionamento.
 class Chip4017 {
 private:
     unsigned LimitReset;
@@ -158,7 +178,6 @@ static void DrawLedGlow(ray::Vector2 center, float radius, ray::Color core, ray:
 }
 
 
-
 // Desenha a placa: fundo escuro, retângulo arredondado e linhas verticais como textura
 static void DrawPanel(ray::Rectangle rec) {
     // fundo geral
@@ -173,7 +192,6 @@ static void DrawPanel(ray::Rectangle rec) {
         ray::DrawLine(x, (int)rec.y + 8, x, (int)(rec.y + rec.height) - 8, ray::Fade(ray::RAYWHITE, 0.02f));
     }
 }
-
 
 
 /*
@@ -288,7 +306,7 @@ public:
                 float t = (float)ray::GetTime();
                 float breathe = 0.5f + 0.5f * sinf(t * 3.2f);
 
-                // Renderização dos LEDs (acendidos ou apagados)
+                // Renderização dos LEDs (acendidos ou apagados) e escrevendo a situação atual com o drawText
                 for (int i = (int)qtLeds - 1; i >= 0; --i) {
                     bool on = ((bits >> i) & 1u) != 0;
                     int idx = (int)qtLeds - 1 - i;
@@ -301,7 +319,7 @@ public:
                     ray::Color onCore = (ray::Color){ 70, 255, 130, 220 };
                     ray::Color onGlow = (ray::Color){ 70, 255, 130, aGlow };
                 
-                    if (on) {
+                    if(on) {
                         DrawLedGlow(c, radius, onCore, onGlow);
                     } else {
                         DrawLedGlow(c, radius, offCore, offGlow);
@@ -323,7 +341,7 @@ public:
 
         // Para a thread definindo 'running' como falso e aguarda sua finalização com join se ainda estiver ativa.
         running.store(false);
-        if (motor.joinable()) {
+        if(motor.joinable()) {
             motor.join();
         }
         ray::CloseWindow();
