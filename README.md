@@ -32,24 +32,24 @@ Interface gráfica utilizando raylib
 ```
 Apple-juice-learning-board-simulator/
 ├── documentacao                    # Documentação do projeto (arquivos LaTeX e PDF final) 
-    ├── appleJuice.aux
-    ├── appleJuice.log 
-    ├── appleJuice.pdf 
-    └── appleJuice.tex
+│   ├── appleJuice.pdf 
+│   └── appleJuice.tex
 ├── images                          # Imagens utilizadas no README
-    ├── apple-juice-simulator.png 
-    └── apple-juice.png 
+│   ├── apple-juice-simulator.png 
+│   └── apple-juice.png 
 ├── paraDisciplina                  # Materiais complementares da disciplina
-    └── orientacao.pdf
+│   ├── orientacao.pdf
+│   └── roteiro.pdf
 ├── testes                          # Testes unitários e experimentais
-    ├── teste-appleJuice.cpp
-    ├── teste.cpp
-    └── testes.cpp
+│   ├── teste-appleJuice.cpp
+│   ├── teste.cpp
+│   └── testes.cpp
 ├── apple-juice.cpp                 # Arquivo principal do simulador
 ├── CONTRIBUTING.md                 # Diretrizes para contribuição no projeto
 ├── LICENSE                         # Licença do projeto (GNU GPLv3)
 ├── Makefile                        # Script de compilação e execução
-└── README.md                       # Documentação principal do repositório
+├── README.md                       # Documentação principal do repositório
+└── shell.nix                       # Arquivo de configuração para compilar em distros nixOS
 ```
 
 ## Pré-requisitos
