@@ -5,6 +5,9 @@ LDFLAGS  = -lpthread
 TARGET = apple-juice
 TESTES = testes
 
+TESTES_SRC = testes/teste.cpp
+TESTES_BIN = testes/teste
+
 # Detecta o sistema operacional
 UNAME := $(shell uname)
 
@@ -30,16 +33,24 @@ all: $(TARGET)
 $(TARGET): apple-juice.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ $(RAYFLAGS) $(LDFLAGS)
 
+# roda o simulador
 run: $(TARGET)
 	./$(TARGET)
 
-testes: testes.cpp
+
+# Compila testes
+$(TESTES_BIN): $(TESTES_SRC)
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
 
-test: testes
-	./$(TESTES)
 
+# Executa testes
+test: $(TESTES_BIN)
+	./$(TESTES_BIN)
+
+
+# apagando binários
 clean:
 	rm -f $(TARGET) $(TESTES)
+
 
 .PHONY: all run testes test clean

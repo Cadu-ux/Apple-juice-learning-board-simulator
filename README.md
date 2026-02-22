@@ -28,11 +28,15 @@ Interface gráfica utilizando raylib
 <br>
 
 
+## Apresentação do projeto
+[Assista ao vídeo (em breve)]()
+
+
 ## Estrutura do projeto
 ```
 Apple-juice-learning-board-simulator/
-├── documentacao                    # Documentação do projeto (arquivos LaTeX e PDF final) 
-│   ├── appleJuice.pdf 
+├── documentacao                    # Documentação escrita por Francisco do projeto
+│   ├── appleJuice.pdf                
 │   └── appleJuice.tex
 ├── images                          # Imagens utilizadas no README
 │   ├── apple-juice-simulator.png 
@@ -41,9 +45,12 @@ Apple-juice-learning-board-simulator/
 │   ├── orientacao.pdf
 │   └── roteiro.pdf
 ├── testes                          # Testes unitários e experimentais
-│   ├── teste-appleJuice.cpp
-│   ├── teste.cpp
-│   └── testes.cpp
+│   ├── 4026test.cpp                # teste de Francisco
+│   ├── clockGenerator-test.cpp     # teste de Francisco
+│   ├── teste-appleJuice.cpp        # teste de Francisco
+│   ├── teste.cpp                   # teste de Renato
+│   └── testes.cpp                  # teste de Arthur 
+│
 ├── apple-juice.cpp                 # Arquivo principal do simulador
 ├── CONTRIBUTING.md                 # Diretrizes para contribuição no projeto
 ├── LICENSE                         # Licença do projeto (GNU GPLv3)

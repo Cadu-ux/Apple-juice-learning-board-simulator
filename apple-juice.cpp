@@ -630,7 +630,6 @@ public:
 int main() {
     try {
         // Adicione os valores para simulação aqui:
-        
         unsigned leds = 4;      // Número total de LEDs para o 4017
         double R1 = 1000.0;     // Resistor R1 do 555
         double R2 = 10000.0;    // Resistor R2 do 555
